@@ -27,6 +27,3 @@ pip-log.txt
 #Mercurial
 .hg
 .hgignore
-
-#Other
-*.txt
