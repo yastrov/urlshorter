@@ -1,0 +1,20 @@
+{% load staticfiles %}<!doctype html>
+<html dir="ltr" lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}{% endblock %}</title>
+    {% block css %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"  />
+    {% endblock %}
+</head>
+<body>
+    <div class="wrapper box">
+        <div>
+            {% block page %}{% endblock %}
+        </div>
+        <footer>
+            <p>&copy; 2013</p>
+        </footer>
+    </div>
+</body>
+</html>
