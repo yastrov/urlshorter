@@ -7,6 +7,7 @@ class UrlAdmin(admin.ModelAdmin):
     list_display = ['url', 'short_version', 'pub_date']
     list_filter = ['pub_date']
     ordering = ['url', 'short_version', 'pub_date']
+    readonly_fields = ['short_version']
     search_fields = ['url', 'short_version', 'pub_date']
     date_hierarchy = 'pub_date'
     fieldsets = [
