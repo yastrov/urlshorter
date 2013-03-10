@@ -3,7 +3,7 @@ from django.db import models
 
 # Create your models here.
 class Url(models.Model):
-    url = models.URLField()
+    url = models.URLField(unique = True)
     short_version = models.AutoField(primary_key=True)
     pub_date = models.DateTimeField('date published')
 

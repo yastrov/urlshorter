@@ -1,0 +1,10 @@
+{% extends 'body.html' %}
+{% load static from staticfiles %}
+{% block title %}Информация о ссылке{% endblock %}
+
+{% block page %}
+
+<a href="{{ url.url }}">{{ url.url }}</a>
+{{ url.short_version }}
+
+{% endblock %}

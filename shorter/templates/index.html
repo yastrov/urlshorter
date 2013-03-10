@@ -1,0 +1,15 @@
+{% extends 'body.html' %}
+
+{% load static from staticfiles %}
+
+{% block title %}Добавить ссылку{% endblock %}
+
+{% block page %}
+
+<form action="/create/" method="post">
+{% csrf_token %}
+<input type="text" name="url">
+<input type="submit" value="Отправить" />
+</form>
+
+{% endblock %}
