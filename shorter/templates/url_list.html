@@ -1,11 +1,22 @@
 {% extends 'body.html' %}
 {% load static from staticfiles %}
-{% block title %}Информация о ссылке{% endblock %}
+{% block title %}Список ссылок{% endblock %}
 {% block page %}
-
+<h1>Список ссылок</h1>
+<table>
+    <tr>
+        <th>Индекс</th>
+        <th>Короткий адрес</th>
+        <th>Полный адрес</th>
+        <th>Дата</th>
+    </tr>
 {% for url in urls %}
-{{ url.short_version }}</br>
-<a href="{{ url.url }}">{{ url.url }}</a>
+    <tr>
+        <td>{{ url.short_version }}</td>
+        <td><a href="{{ url.get_short_url }}">{{ url.get_short_url }}</a></td>
+        <td><a href="{{ url.url }}">{{ url.url }}</a></td>
+        <td>{{ url.pub_date }}</td>
+    </tr>
 {% endfor %}
-
+</table>
 {% endblock %}

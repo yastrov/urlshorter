@@ -3,8 +3,10 @@
 {% block title %}Информация о ссылке{% endblock %}
 
 {% block page %}
-
-<a href="{{ url.url }}">{{ url.url }}</a>
-{{ url.short_version }}
+<h1>Информация о ссылке</h1>
+<p>
+Url: <a href="{{ url.url }}">{{ url.url }}</a> </br>
+Сокращенный: <a href="{{ url.get_short_url }}">{{ url.get_short_url }}</a>
+</p>
 
 {% endblock %}
