@@ -2,14 +2,14 @@
 
 {% load static from staticfiles %}
 
-{% block title %}Добавить ссылку{% endblock %}
+{% block title %}Сократить ссылку{% endblock %}
 
 {% block page %}
-
-<form action="/create/" method="post">
+<h2>Сократить ссылку</h2>
+<form action="{% url 'create' %}" method="post">
 {% csrf_token %}
 <input type="text" name="url">
-<input type="submit" value="Отправить" />
+<input type="submit" value="Отправить"/>
 </form>
 
 {% endblock %}

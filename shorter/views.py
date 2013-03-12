@@ -26,7 +26,7 @@ def create_url(request):
                 url.full_clean()
                 url.save()
             except:
-                HttpResponse('ERROR')
+                return HttpResponse('ERROR')
         data = base64.b64encode(str(url.short_version) )
         return HttpResponseRedirect( reverse('shorter.urls.about_url', args=(data,)) )
     return HttpResponse('ERROR')
@@ -55,3 +55,4 @@ class UrlList(ListView):
     template_name = 'url_list.html'
     queryset = Url.objects.all().order_by('-pub_date')
     context_object_name = 'urls'
+    paginate_by = 40

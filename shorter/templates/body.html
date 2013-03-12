@@ -13,6 +13,10 @@
             {% block page %}{% endblock %}
         </div>
         <footer>
+            <nav class="textcenter">
+                <a href="{% url 'index' %}">Сократить ссылку</a>
+                <a href="{% url 'list' %}">Список ссылок</a>
+            </nav>
             <p>&copy; 2013</p>
         </footer>
     </div>

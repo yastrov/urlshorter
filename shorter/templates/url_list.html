@@ -2,21 +2,40 @@
 {% load static from staticfiles %}
 {% block title %}Список ссылок{% endblock %}
 {% block page %}
-<h1>Список ссылок</h1>
-<table>
-    <tr>
-        <th>Индекс</th>
-        <th>Короткий адрес</th>
-        <th>Полный адрес</th>
-        <th>Дата</th>
-    </tr>
-{% for url in urls %}
-    <tr>
-        <td>{{ url.short_version }}</td>
-        <td><a href="{{ url.get_short_url }}">{{ url.get_short_url }}</a></td>
-        <td><a href="{{ url.url }}">{{ url.url }}</a></td>
-        <td>{{ url.pub_date }}</td>
-    </tr>
-{% endfor %}
-</table>
+<h2>Список ссылок</h2>
+{% if urls %}
+    <table class="center">
+        <tr>
+            <th>Индекс</th>
+            <th>Короткий адрес</th>
+            <th>Полный адрес</th>
+            <th>Дата</th>
+        </tr>
+    {% for url in urls %}
+        <tr>
+            <td>{{ url.short_version }}</td>
+            <td><a href="{{ url.get_short_url }}">{{ url.get_short_url }}</a></td>
+            <td><a href="{{ url.url }}">{{ url.url }}</a></td>
+            <td>{{ url.pub_date }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% if is_paginated %}
+            <nav class="pagination textcenter">
+                <span class="page-links">
+                    {% if page_obj.has_previous %}
+                        <a href="{% url 'list' %}?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                    {% endif %}
+                    <span class="page-current">
+                        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
+                    </span>
+                    {% if page_obj.has_next %}
+                        <a href="{% url 'list' %}?page={{ page_obj.next_page_number }}">Следующая</a>
+                    {% endif %}
+                </span>
+            </nav>
+    {% endif %}
+{% else %}
+    <p class="textcenter">База данных пуста</p>
+{% endif %}
 {% endblock %}
