@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, url, include
-from .views import create_url, recover_url, UrlList, IndexPage, about_url
+from .views import UrlList, IndexPage, UrlCreate, UrlRecoverRedirect, UrlAbout
 
 urlpatterns = patterns('',
     url('^$',  IndexPage.as_view(), name='index'),
-    url('^create/$', create_url, name='create'),
-    url('^about/(?P<uri>[a-zA-Z0-9=\?]+)/$', about_url, name='about'),
+    url('^create/$', UrlCreate.as_view(), name='create'),
+    url('^about/(?P<uri>[a-zA-Z0-9=\?]+)/$', UrlAbout.as_view(), name='about'),
     url('^list/$',UrlList.as_view(), name='list'),
-    url('^(?P<uri>[a-zA-Z0-9=\?]+)/$', recover_url, name='redirecter'),
+    url('^(?P<uri>[a-zA-Z0-9=\?]+)/$', UrlRecoverRedirect.as_view(), name='redirecter'),
 )

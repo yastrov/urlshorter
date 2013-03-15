@@ -16,4 +16,4 @@ class Url(models.Model):
         
     def get_short_url(self):
         data = base64.b64encode(str(self.short_version) )
-        return reverse('shorter.urls.recover_url', args=(data,))
+        return reverse('redirecter', kwargs={'uri':data})
