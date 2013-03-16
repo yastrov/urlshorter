@@ -9,6 +9,9 @@ from django.utils import timezone
 from .models import Url
 from .utils import b64ToInt, intToB64
 from django.utils import simplejson
+from .mixins import JSONResponseMixin
+from django.views.generic.detail import SingleObjectTemplateResponseMixin
+from django.views.generic.list import MultipleObjectTemplateResponseMixin
 
 class IndexPage(TemplateView):
     template_name = 'index.html'
@@ -70,12 +73,18 @@ class UrlAbout(DetailView):
             raise Http404
 
 
-class UrlList(ListView):
+class UrlList(JSONResponseMixin, ListView):
     template_name = 'url_list.html'
     queryset = Url.objects.all().order_by('-pub_date')
     context_object_name = 'urls'
-    paginate_by = 40
+    paginate_by = 5#40
 
+    def render_to_response(self, context):
+        # Look for a 'format=json' GET argument
+        if self.request.is_ajax():
+            return JSONResponseMixin.render_to_response(self, context)
+        else:
+            return ListView.render_to_response(self, context)
 
 #Next for AJAX
 def url_create(request):
@@ -93,7 +102,8 @@ def url_create(request):
                     return HttpResponse('ERROR')
         results ={
             "url": url.url,
-            "short": url.get_short_url()
+            "short": url.get_short_url(),
+            "pub_date": url.pub_date
         }
         json = simplejson.dumps(results)
         return HttpResponse(json, mimetype='application/json')

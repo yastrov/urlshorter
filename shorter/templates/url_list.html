@@ -2,6 +2,10 @@
 {% load static from staticfiles %}
 {% block title %}Список ссылок{% endblock %}
 {% block page %}
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/url_list.js' %}"></script>
+{% endblock %}
 <h2>Список ссылок</h2>
 {% if urls %}
     <table class="center">
@@ -30,7 +34,7 @@
                         Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
                     </span>
                     {% if page_obj.has_next %}
-                        <a href="{% url 'list' %}?page={{ page_obj.next_page_number }}">Следующая</a>
+                        <a id="next_page" href="{% url 'list' %}?page={{ page_obj.next_page_number }}">Следующая</a>
                     {% endif %}
                 </span>
             </nav>
