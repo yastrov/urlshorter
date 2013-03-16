@@ -8,6 +8,7 @@ from django.views.generic.list import ListView
 from django.utils import timezone
 from .models import Url
 from .utils import b64ToInt, intToB64
+from django.utils import simplejson
 
 class IndexPage(TemplateView):
     template_name = 'index.html'
@@ -30,7 +31,15 @@ class UrlCreate(View):
                     url.save()
                 except:
                     return HttpResponse('ERROR')
-            return render(request, 'url_info.html', {'url': url})
+            if request.is_ajax():
+                results ={
+                    "url": url.url,
+                    "short": url.get_short_url()
+                }
+                json = simplejson.dumps(results)
+                return HttpResponse(json, mimetype='application/json')
+            else:
+                return render(request, 'url_info.html', {'url': url})
         else:
             return HttpResponse('ERROR')
 
@@ -66,3 +75,28 @@ class UrlList(ListView):
     queryset = Url.objects.all().order_by('-pub_date')
     context_object_name = 'urls'
     paginate_by = 40
+
+
+#Next for AJAX
+def url_create(request):
+    if request.is_ajax():
+        if "url" in request.POST:
+            udata = request.POST['url']
+            try:
+                url = Url.objects.get(url=udata)
+            except Url.DoesNotExist:
+                try:
+                    url = Url(url=udata, pub_date=timezone.now())
+                    url.full_clean()
+                    url.save()
+                except:
+                    return HttpResponse('ERROR')
+        results ={
+            "url": url.url,
+            "short": url.get_short_url()
+        }
+        json = simplejson.dumps(results)
+        return HttpResponse(json, mimetype='application/json')
+
+    else:
+        return HttpResponse('ERROR')

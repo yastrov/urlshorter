@@ -6,10 +6,13 @@
     {% block css %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"  />
     {% endblock %}
+    {% block js %}
+        <script type="text/javascript" src="{% static 'js/jquery-1.9.1.min.js' %}"></script>
+    {% endblock %}
 </head>
 <body>
     <div class="wrapper box">
-        <div>
+        <div id="content">
             {% block page %}{% endblock %}
         </div>
         <footer>

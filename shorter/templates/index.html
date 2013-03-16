@@ -4,6 +4,11 @@
 
 {% block title %}Сократить ссылку{% endblock %}
 
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+{% endblock %}
+
 {% block page %}
 <h2>Сократить ссылку</h2>
 <form action="{% url 'create' %}" method="post">
@@ -11,5 +16,4 @@
 <input type="text" name="url">
 <input type="submit" value="Отправить"/>
 </form>
-
 {% endblock %}
