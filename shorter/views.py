@@ -1,38 +1,39 @@
-# Create your views here.
-from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, Http404
+from django.shortcuts import redirect, get_object_or_404
 from django.core.urlresolvers import reverse
-from django.views.generic.base import TemplateView, View, RedirectView
+from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.views.generic.edit import FormView
 from django.utils import timezone
 from .models import Url
 from .utils import b64ToInt, intToB64
+from .forms import UrlForm
 
 class IndexPage(TemplateView):
     template_name = 'index.html'
 
 
-class UrlCreate(View):
+class UrlCreate(FormView):
+    template_name = 'index.html'
+    success_url = '/about/'
+    form_class =  UrlForm
 
-    def get(self, request, *args, **kwargs):
-        return render(request, 'index.html')
+    # def get_form_kwargs(self):
+    #     #It be good for send form with prepaired data.
+    #     kwargs = super(UrlCreate, self).get_form_kwargs()
+    #     kwargs.update({
+    #         'pub_date': timezone.now()
+    #     })
+    #     return kwargs
 
-    def post(self, request, *args, **kwargs):
-        if "url" in request.POST:
-            udata = request.POST['url']
-            try:
-                url = Url.objects.get(url=udata)
-            except Url.DoesNotExist:
-                try:
-                    url = Url(url=udata, pub_date=timezone.now())
-                    url.full_clean()
-                    url.save()
-                except:
-                    return HttpResponse('ERROR')
-            return render(request, 'url_info.html', {'url': url})
-        else:
-            return HttpResponse('ERROR')
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.pub_date = timezone.now()
+        instance.save()
+        full_url = self.get_success_url() + instance.get_b64_number()
+        #full_url = reverse(self.get_success_url(), kwargs={'uri': instance.get_b64_number() } )
+        return redirect(full_url)
 
 
 class UrlRecoverRedirect(RedirectView):
